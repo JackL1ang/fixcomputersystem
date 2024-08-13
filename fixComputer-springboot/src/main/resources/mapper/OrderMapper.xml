@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fixcomputer.mapper.OrderSelectMapper">
+    <resultMap id="orderResultMap" type="com.fixcomputer.domain.vo.OrderMessage">
+        <id column="order_id" property="orderId"/>
+        <result column="fixer_id" property="fixer_id"/>
+        <result column="category" property="category"/>
+        <result column="user_name" property="userName"/>
+        <result column="status" property="status"/>
+        <result column="fixer_name" property="fixerName"/>
+        <result column="create_date" property="create_date"/>
+        <result column="accept_date" property="accept_date"/>
+        <result column="finish_date" property="finish_date"/>
+    </resultMap>
+    <select id="selectAllOrder" resultMap="orderResultMap">
+        SELECT
+            o.order_id,
+            o.fixer_id,
+            o.category,
+            o.create_date,
+            o.accept_date,
+            o.finish_date,
+            o.status,
+            u.username AS user_name
+
+
+        FROM
+            t_order o
+                LEFT JOIN
+            t_user u ON o.user_id = u.id
+
+
+    </select>
+
+    <resultMap id="orderById" type="com.fixcomputer.domain.vo.OrderDetailInfo">
+        <id column="order_id" property="orderId"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="waybill" property="waybill"/>
+        <result column="category" property="category"/>
+        <result column="notes" property="notes"/>
+        <result column="user_name" property="userName"/>
+        <result column="status_name" property="statusName"/>
+        <result column="fixer_id" property="fixerId"/>
+        <result column="create_date" property="create_date"/>
+        <result column="finish_date" property="finish_date"/>
+        <result column="statusNum" property="statusNum"/>
+        <result column="accept_date" property="accept_date"/>
+        <result column="rate_status" property="rate_status"/>
+        <result column="rate_score" property="rate_score"/>
+        <result column="rate_content" property="rate_content"/>
+        <result column="complete_waybill" property="complete_waybill"/>
+        <result column="total_amount" property="total_amount"/>
+        <result column="payment_date" property="paymentDate"/>
+        <result column="payStatus" property="payStatus"/>
+    </resultMap>
+    <select id="selectByOrderId" resultMap="orderById">
+        SELECT
+            o.`order_id`,
+            o.`fixer_id`,
+            o.`name`,
+            o.`status` AS statusNum,
+            o.`phone`,
+            o.category,
+            o.notes,
+            o.`address`,
+            o.`complete_waybill`,
+            o.`waybill`,
+            o.create_date,
+            o.accept_date,
+            o.finish_date,
+            u.`username` AS user_name,
+            s.`status_name`,
+            r.rate_status,
+            r.rate_score,
+            r.rate_content,
+            p.total_amount,
+            p.payment_date,
+            p.status as payStatus
+        FROM
+            `t_order` o
+                LEFT JOIN
+            t_user u ON o.user_id = u.id
+                LEFT JOIN
+            t_status s ON o.`status` = s.status_id
+                LEFT JOIN
+            t_rate r on  o.order_id = r.order_id
+                LEFT JOIN
+            t_payinfo p on o.order_id = p.order_id
+        WHERE
+        o.order_id = #{id};
+    </select>
+
+    <select id="selectOrderByFixerId" resultMap="orderById">
+        SELECT
+            o.`order_id`,
+            o.`fixer_id`,
+            o.accept_date,
+            o.`name`,
+            o.`status` AS statusNum,
+            o.`phone`,
+            o.category,
+            o.notes,
+            o.`address`,
+            o.`waybill`,
+            o.create_date,
+            o.finish_date,
+            u.`username` AS user_name,
+            s.`status_name`
+        FROM
+            `t_order` o
+                LEFT JOIN
+            t_user u ON o.user_id = u.id
+                LEFT JOIN
+            t_status s ON o.`status` = s.status_id
+        WHERE
+            o.fixer_id = #{id}
+        LIMIT 0,9
+    </select>
+    <resultMap id="userOrder" type="com.fixcomputer.domain.vo.UserDetailInfo">
+        <id column="order_id" property="orderId"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="waybill" property="waybill"/>
+        <result column="category" property="category"/>
+        <result column="notes" property="notes"/>
+        <result column="user_name" property="userName"/>
+        <result column="status_name" property="statusName"/>
+        <result column="fixer_id" property="fixerId"/>
+        <result column="create_date" property="create_date"/>
+        <result column="finish_date" property="finish_date"/>
+        <result column="statusNum" property="statusNum"/>
+        <result column="accept_date" property="accept_date"/>
+        <result column="rate_status" property="rate_status"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="payment_date" property="paymentDate"/>
+        <result column="pay_status" property="pay_status"/>
+    </resultMap>
+    <select id="selectOrderByUserId" resultMap="userOrder">
+        SELECT
+            o.`order_id`,
+            o.`fixer_id`,
+            o.`name`,
+            o.`status` AS statusNum,
+            o.`phone`,
+            o.category,
+            o.notes,
+            o.`address`,
+            o.`waybill`,
+            o.create_date,
+            o.accept_date,
+            o.finish_date,
+            u.`username` AS user_name,
+            s.`status_name`,
+            r.rate_status,
+            p.total_amount,
+            p.payment_date,
+            p.status as pay_status
+        FROM
+            `t_order` o
+                LEFT JOIN
+            t_user u ON o.user_id = u.id
+                LEFT JOIN
+            t_status s ON o.`status` = s.status_id
+                LEFT JOIN
+            t_rate r ON o.order_id = r.order_id
+                LEFT JOIN
+            t_payinfo p on o.order_id = p.order_id
+        WHERE
+            o.user_id = #{id}
+        LIMIT 0,9
+    </select>
+    <resultMap id="orderByStatus" type="com.fixcomputer.domain.vo.FixAcceptOrder">
+        <id column="order_id" property="orderId"/>
+        <result column="user_name" property="userName"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="waybill" property="waybill"/>
+        <result column="category" property="category"/>
+        <result column="notes" property="notes"/>
+        <result column="status_name" property="statusName"/>
+        <result column="create_date" property="create_date"/>
+    </resultMap>
+    <select id="selectFixOrder" resultMap="orderByStatus">
+        SELECT
+            o.`order_id`,
+            o.`phone`,
+            o.`category`,
+            o.`notes`,
+            o.`address`,
+            o.`waybill`,
+            o.create_date,
+            u.`username` AS user_name
+        FROM
+            `t_order` o
+                LEFT JOIN
+            t_user u ON o.user_id = u.id
+        WHERE
+            o.status = #{status}
+        LIMIT 0,6
+    </select>
+
+
+    <resultMap id="orderCompleteDate" type="com.fixcomputer.domain.entity.CompleteDate">
+        <result column="finish_date" property="completeDate"/>
+    </resultMap>
+    <select id="selectOrderCompleteDate" resultMap="orderCompleteDate">
+        SELECT
+            finish_date
+        FROM
+            `t_order`
+        WHERE
+            order_id = #{order_id};
+    </select>
+
+
+</mapper>

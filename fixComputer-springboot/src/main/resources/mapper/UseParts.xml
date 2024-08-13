@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fixcomputer.mapper.UsePartsMapper">
+
+    <resultMap id="RepairInfo" type="com.fixcomputer.domain.vo.UsePartsInfo" autoMapping="true">
+        <result property="useParts_id" column="useParts_id"/>
+        <result property="amount" column="amount"/>
+        <result property="parts_name" column="parts_name"/>
+        <result property="manufacturer" column="manufacturer"/>
+        <result property="parts_id" column="parts_id"/>
+    </resultMap>
+
+    <select id="selectUseParts" resultMap="RepairInfo">
+        SELECT
+            up.id as useParts_id,
+            p.parts_id,
+            up.amount,
+            p.name as parts_name,
+            p.manufacturer
+        FROM
+            t_useparts up
+        LEFT JOIN
+            t_parts p on up.parts_id = p.parts_id
+        WHERE
+            up.order_id = #{order_id};
+    </select>
+
+
+
+
+</mapper>

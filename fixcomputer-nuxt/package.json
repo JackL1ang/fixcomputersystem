@@ -1,0 +1,46 @@
+{
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "preview": "nuxi preview",
+    "start": "node .output/server/index.mjs",
+    "generate": "nuxi generate",
+    "postinstall": "nuxi prepare"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@nuxtjs/composition-api": "^0.33.1",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
+    "axios": "^1.6.7",
+    "crossws": "^0.2.4",
+    "echarts": "^5.5.0",
+    "element-china-area-data": "^6.1.0",
+    "element-plus": "^2.6.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@element-plus/nuxt": "^1.0.7",
+    "@nuxtjs/color-mode": "^3.3.2",
+    "@pinia/nuxt": "^0.4.11",
+    "@vueuse/core": "^10.9.0",
+    "@vueuse/nuxt": "^10.9.0",
+    "nuxt": "^3.10.3",
+    "sass": "^1.71.1",
+    "typescript": "^5.3.3",
+    "vue": "3.3.8"
+  },
+  "peerDependencies": {
+    "pinia": "^2.1.6"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "webpack",
+        "vite",
+        "vue"
+      ]
+    }
+  }
+}
